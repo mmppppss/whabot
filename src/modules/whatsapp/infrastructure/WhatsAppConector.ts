@@ -36,7 +36,8 @@ export class WhatsAppConnector {
 		this.client = makeWASocket({
 			auth: state,
 			logger: pino({ level: 'silent' }),
-			printQRInTerminal: false
+			printQRInTerminal: false,
+			browser: ['SoftProject', '1.0.0', 'Chrome'],
 		});
 
 		this.client.ev.on('connection.update', (update) => {
@@ -53,7 +54,7 @@ export class WhatsAppConnector {
 			if (connection === 'close') {
 				const reason =
 					(lastDisconnect?.error as any)?.output?.statusCode;
-
+				
 				this.events?.onDisconnected?.(reason);
 			}
 		});
@@ -65,7 +66,7 @@ export class WhatsAppConnector {
 
 			for (const message of upsert.messages) {
 				if (!message.message) continue;
-				if (message.key.fromMe) continue;
+				//if (message.key.fromMe) continue;
 				this.events?.onMessage?.(message);
 			}
 		});
