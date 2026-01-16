@@ -5,7 +5,6 @@ import { printQR } from '@/infrastructure/runtime/printQR';
 import { processMessage } from '@/modules/whatsapp/application/messageProcessor'
 
 export default async function server() {
-	const database = await initDatabase();
 	const logger = new Logger();
 	const sessions = ["test2"];
 	sessions.forEach(session => {
