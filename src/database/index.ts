@@ -1,20 +1,12 @@
-import { Sequelize } from 'sequelize';
-import { User } from './models/User';
+import { drizzle } from "drizzle-orm/mysql2";
+import mysql from "mysql2/promise";
 
-export const sequelize = new Sequelize({
-    dialect: 'mysql',
-    host: 'localhost',
-    username: 'root',
-    password: 'root',
-    database: 'whabot',
-    logging: false,
+const pool = mysql.createPool({
+    host: "localhost",
+    user: "root",
+    password: "root",
+    database: "whabot",
+    port: 3306,
 });
 
-export const initDatabase = async () => {
-    User.initModel(sequelize);
-
-    await sequelize.authenticate();
-    await sequelize.sync();
-	return sequelize;
-};
-
+export const db = drizzle(pool);

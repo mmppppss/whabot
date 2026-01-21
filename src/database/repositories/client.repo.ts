@@ -1,0 +1,52 @@
+import { db } from "../index";
+import { clients } from "../schema/clients.schema";
+import { Client, CreateClientDto } from "../../types/client";
+import { eq } from "drizzle-orm";
+
+export interface IClientsRepo {
+	findAll(): Promise<Client[]>;
+	findById(id: number): Promise<Client | null>;
+	create(data: CreateClientDto): Promise<boolean>;
+	update(id: number, data: Partial<CreateClientDto>): Promise<boolean>;
+	deleteById(id: number): Promise<boolean>;
+}
+
+export class ClientsRepo implements IClientsRepo {
+	async findAll(): Promise<Client[]> {
+		return db.select().from(clients);
+	}
+
+	async findById(id: number): Promise<Client | null> {
+		const result = await db
+			.select()
+			.from(clients)
+			.where(eq(clients.id, id))
+			.limit(1);
+
+		return result[0] ?? null;
+	}
+
+	async create(data: CreateClientDto): Promise<boolean> {
+		const result = await db
+			.insert(clients)
+			.values(data);
+		return result[0].affectedRows > 0;
+	}
+
+	async update(id: number, data: Partial<CreateClientDto>): Promise<boolean> {
+		const result = await db
+			.update(clients)
+			.set(data)
+			.where(eq(clients.id, id))
+
+		return result[0].affectedRows > 0;
+	}
+
+	async deleteById(id: number): Promise<boolean> {
+		const result = await db
+			.delete(clients)
+			.where(eq(clients.id, id))
+
+		return result[0].affectedRows > 0;
+	}
+}
