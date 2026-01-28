@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1768963631837,
-      "tag": "0000_common_giant_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1769467406880,
-      "tag": "0001_previous_blackheart",
+      "when": 1769555410210,
+      "tag": "0000_crazy_quentin_quire",
       "breakpoints": true
     }
   ]

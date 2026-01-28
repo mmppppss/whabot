@@ -1,29 +1,32 @@
-import { initDatabase } from '@/database';
 import { Logger } from '@/infrastructure/logging/Logger';
 import { WhatsAppConnector } from '@/modules/whatsapp/infrastructure/WhatsAppConector';
 import { printQR } from '@/infrastructure/runtime/printQR';
 import { processMessage } from '@/modules/whatsapp/application/messageProcessor'
+import { ClientsRepo } from '@/database/repositories/client.repo'
+import { Client } from './types/client';
 
 export default async function server() {
 	const logger = new Logger();
-	const sessions = ["test2"];
-	sessions.forEach(session => {
+	const client = new ClientsRepo();
+	const clients = await client.findAll();
+	
+	clients.forEach((session: Client) => {
 		const connector = new WhatsAppConnector({
-			sessionId: session,
+			sessionId: session.name,
 			events: {
 				onQR: (qr) => {
-					logger.info('QR', {botId: session});
+					logger.info('QR', { botId: session.name });
 					printQR(qr);
 				},
 				onConnected: () => {
-					logger.info('WhatsApp conectado', {botId: session});
+					logger.info('WhatsApp conectado', { botId: session.name });
 				},
 				onMessage: (msg) => {
 					const message = processMessage(msg);
-					logger.info(JSON.stringify(message?.text), {botId: session});
+					logger.info(JSON.stringify(message?.text), { botId: session.name });
 				},
 				onDisconnected(reason) {
-					logger.info(`WhatsApp desconectado ${reason}`, {botId: session});
+					logger.info(`WhatsApp desconectado ${reason}`, { botId: session.name });
 					connector.connect();
 				},
 			}

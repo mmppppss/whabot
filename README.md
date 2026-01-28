@@ -1,3 +1,15 @@
+## Ejecucion
+### Requisitos:
+- pnpm 
+- node 20+
+
+```bash
+# solo la primera ves
+pnpm install
+
+# ejecutar
+pnpm dev
+```
 
 ## Capa de Base de Datos (Database Layer)
 
@@ -54,11 +66,6 @@ Retorna entidades o estados (boolean)
 DTOs y contratos de datos
 Independientes de Drizzle y de la base de datos
 
-### Generar migraciones
-> pnpm drizzle-kit generate
-
-Ejecutar migraciones
-> pnpm drizzle-kit migrate
 
 
-Las migraciones se guardan en la carpeta drizzle/ y deben versionarse.
+

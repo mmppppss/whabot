@@ -6,7 +6,7 @@
 	"scripts": {
 		"test": "vitest",
 		"start": "pnpm exec tsx src/index.ts",
-		"dev": "tsx watch src/index.ts"
+		"dev": "node --env-file=.env node_modules/tsx/dist/cli.mjs watch src/index.ts"
 	},
 	"keywords": [],
 	"author": "",

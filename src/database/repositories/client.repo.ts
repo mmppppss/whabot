@@ -3,15 +3,7 @@ import { clients } from "../schema/clients.schema";
 import { Client, CreateClientDto } from "../../types/client";
 import { eq } from "drizzle-orm";
 
-export interface IClientsRepo {
-	findAll(): Promise<Client[]>;
-	findById(id: number): Promise<Client | null>;
-	create(data: CreateClientDto): Promise<boolean>;
-	update(id: number, data: Partial<CreateClientDto>): Promise<boolean>;
-	deleteById(id: number): Promise<boolean>;
-}
-
-export class ClientsRepo implements IClientsRepo {
+export class ClientsRepo {
 	async findAll(): Promise<Client[]> {
 		return db.select().from(clients);
 	}
