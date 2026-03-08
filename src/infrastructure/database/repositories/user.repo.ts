@@ -1,20 +1,20 @@
 import { BaseRepository } from "./base.repo";
 import { users } from "../schema/users.schema";
 import { eq } from "drizzle-orm";
-import { db } from "..";
 import { User } from "../types/user.type";
 import { randomUUID } from "crypto";
+import { MySql2Database } from "drizzle-orm/mysql2";
 
 export class UserRepository extends BaseRepository<
     typeof users,
     string
 > {
-    constructor() {
-        super(users, users.id);
+    constructor(dbInstance: MySql2Database<any>) {
+        super(dbInstance, users, users.id);
     }
 
     async findByEmail(email: string): Promise<User | null> {
-        const result = await db
+        const result = await this.db
             .select()
             .from(users)
             .where(eq(users.email, email))
@@ -25,7 +25,7 @@ export class UserRepository extends BaseRepository<
 
     async create(username: string, email: string, password: string): Promise<User> {
 		const id = randomUUID();
-        await db.insert(users).values({
+        await this.db.insert(users).values({
 			id,
 			username,
 			email,
@@ -39,4 +39,5 @@ export class UserRepository extends BaseRepository<
 
         return created;
     }
+
 }

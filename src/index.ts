@@ -4,7 +4,7 @@ import startApi from '@/api/server'
 async function bootstrap() {
     await Promise.all([
         server(),
-        startApi()
+        startApi(),
     ]);
 }
 

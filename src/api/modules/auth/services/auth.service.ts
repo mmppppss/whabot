@@ -1,59 +1,68 @@
+import { userRepo } from "@/infrastructure/database/repositories";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 export interface RegisterInput {
-    email: string;
-    password: string;
-    name: string;
+	email: string;
+	password: string;
+	name: string;
 }
-
 export class AuthService {
 
-    public async register(data: RegisterInput) {
+	public async login(body: any) {
 
-        return {
-            message: "User registered successfully",
-            user: {
-                id: 1,
-                email: data.email,
-                name: data.name
-            },
-            accessToken: "fake-access-token-123"
-        };
-    }
+		const { email, password } = body;
 
-    public async login(body: any) {
+		const user = await userRepo.findByEmail(email);
 
-		const { email, username, password } = body;
-        if (email !== "admin@example.com" || password !== "123456") {
-            throw new Error("Invalid credentials");
-        }
+		if (!user) {
+			throw new Error("User not found");
+		}
 
-        return {
-            message: "Login successful",
-            user: {
-                id: 1,
-                email: "admin@example.com",
-                name: "Admin User"
-            },
-            accessToken: "fake-access-token-123",
-            refreshToken: "fake-refresh-token-456"
-        };
-    }
+		const isPasswordValid = await bcrypt.compare(password, user.password);
+		if (!isPasswordValid) return null;
+		const token = this.generateToken(user.id, user.email);
+		const userResponse = {
+			id: user.id,
+			username: user.username, 
+			email: user.email
+		}
+		const reponse = {
+			message: 'Login Correcto',
+			data:{
+				user: userResponse,
+				token
+			}
+		}
+		return reponse;
+	}
 
-    public async refresh(refreshToken: string) {
+	// mover a helpers globales 
+	private generateToken(userId: string, email: string): string {
+		const secret = process.env.JWT_SECRET || "clave_super_secreta_provisional";
 
-        if (refreshToken !== "fake-refresh-token-456") {
-            throw new Error("Invalid refresh token");
-        }
+		return jwt.sign(
+			{ sub: userId, email: email },
+			secret,
+			{ expiresIn: '7d' }
+		);
+	}
 
-        return {
-            message: "Token refreshed",
-            accessToken: "new-fake-access-token-789"
-        };
-    }
+	public async refresh(refreshToken: string) {
 
-    public async logout(user: any) {
+		if (refreshToken !== "fake-refresh-token-456") {
+			throw new Error("Invalid refresh token");
+		}
 
-        return {
-            message: "User logged out"
-        };
-    }
+		return {
+			message: "Token refreshed",
+			accessToken: "new-fake-access-token-789"
+		};
+	}
+
+	public async logout(user: any) {
+
+		return {
+			message: "User logged out"
+		};
+	}
 }

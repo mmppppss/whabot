@@ -7,9 +7,10 @@
 **URL**: `/api/v1/auth/login`
 
 **BODY**:
+
+Type: JSON
 ```json
 {
-    "username":"admin",
     "email": "admin@example.com",
     "password": "123456"
 }
@@ -18,13 +19,12 @@
 **RESPONSE**:
 ```json
 {
-    "message":"Login successful",
-    "user":{
-        "id":1,
-        "email":"admin@example.com",
-        "name":"Admin User"
-    },
-    "accessToken":"fake-access-token-123",
-    "refreshToken":"fake-refresh-token-456"
-}
+    "message":"Login Correcto",
+    "data":{
+        "user": {
+            "id":"ae2a0f49-eadb-4108-a76f-47c979917bf8",
+            "username":"admin",
+            "email":"admin",
+        },
+        "token":"eyJhb...nWNyk"}}
 ```

@@ -10,9 +10,9 @@ export class AuthController {
 	}
 	public login = async (req: Request, res: Response): Promise<Response> => {
 		try {
-			const { email, username, password } = req.body;
+			const { email, password } = req.body;
 
-			if ((!email || !username)|| !password) {
+			if (!email || !password) {
 				return res.status(400).json({
 					message: "Missing email or password"
 				});
