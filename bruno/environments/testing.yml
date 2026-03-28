@@ -1,0 +1,6 @@
+name: testing
+variables:
+  - name: token_jwt
+    value: ""
+  - name: url
+    value: http://localhost:3000

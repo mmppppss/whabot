@@ -1,0 +1,16 @@
+opencollection: 1.0.0
+info:
+  name: "api_reply"
+  type: workspace
+
+collections:
+  - name: "user"
+    path: "collections/user"
+  - name: "auth"
+    path: "collections/auth"
+
+specs:
+
+docs: ''
+
+activeEnvironmentUid: 109x9wr00000000000000

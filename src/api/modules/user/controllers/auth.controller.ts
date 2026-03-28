@@ -13,12 +13,6 @@ export class UserController {
 		try {
 			const { email, password, username } = req.body;
 
-			if (!email || !password || !username) {
-				return res.status(400).json({
-					message: "Missing required fields: email, password, username"
-				});
-			}
-
 			const result = await this.userService.register({ email, password, username });
 
 			return res.status(201).json({

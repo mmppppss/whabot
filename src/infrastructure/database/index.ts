@@ -12,8 +12,12 @@ if (!connectionString) {
 const pool = mysql.createPool({
 	uri: connectionString,
 	ssl: { rejectUnauthorized: true }
-}).on("acquire",()  => {
-	logger.success("Database conected", {system: true});
 });
+
+(async () => {
+	const connection = await pool.getConnection();
+	logger.success("Database conected", {system: true});
+	connection.release();
+})();
 
 export const db = drizzle(pool);
